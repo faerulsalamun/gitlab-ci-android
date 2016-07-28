@@ -59,7 +59,7 @@ verify_tools() {
 	fi
 	
 	# Check 'curl' tool
-	"${CURL}" --/usr/bin/jarsignerhelp >/dev/null
+	"${CURL}" --help >/dev/null
 	if [ $? -ne 0 ]; then
 		echo "Could not run curl tool, please check settings"
 		exit 1
