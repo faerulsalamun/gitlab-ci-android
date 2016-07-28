@@ -1,12 +1,16 @@
 #
-# GitLab CI: Android v0.2
+# GitLab CI-CD testfairy: Android v1.0
 #
+# Original Source
 # https://hub.docker.com/r/jangrewe/gitlab-ci-android/
 # https://git.faked.org/jan/gitlab-ci-android
 #
+# Source
+# https://hub.docker.com/r/faerulsalamun/gitlab-ci-cd-testfairy-android
+# https://github.com/faerulsalamun/gitlab-ci-cd-testfairy-android
 
 FROM ubuntu:16.04
-MAINTAINER Jan Grewe <jan@faked.org>
+MAINTAINER Jan Grewe <jan@faked.org>, Faerul Salamun <faerulsalamun@gmail.com>
 
 ENV VERSION_SDK_TOOLS "25.1.7"
 ENV VERSION_BUILD_TOOLS "24.0.0"
@@ -29,6 +33,7 @@ RUN apt-get -qq update && \
       lib32ncurses5 \
       lib32z1 \
       unzip \
+      zip \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN rm -f /etc/ssl/certs/java/cacerts; \
@@ -37,5 +42,16 @@ RUN rm -f /etc/ssl/certs/java/cacerts; \
 ADD http://dl.google.com/android/repository/tools_r${VERSION_SDK_TOOLS}-linux.zip /tools.zip
 RUN unzip /tools.zip -d /sdk && \
     rm -v /tools.zip
+
+#ENV for test fairy for CD
+ENV CURL_POSITION "/usr/bin/curl"
+ENV ZIP_POSITION "/usr/bin/zip"
+ENV KEYTOOL_POSITION "/usr/bin/keytool"
+ENV ZIPALIGN_POSITION "/sdk/build-tools/24.0.0/zipalign"
+ENV JARSIGNER_POSITION "/usr/bin/jarsigner"
+
+# Download testfairy for deployment
+COPY testfairy.sh /home
+COPY testfairy.jks /home
 
 RUN (while [ 1 ]; do sleep 5; echo y; done) | ${ANDROID_HOME}/tools/android update sdk -u -a -t ${SDK_PACKAGES}
