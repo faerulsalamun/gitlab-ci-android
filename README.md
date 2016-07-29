@@ -3,6 +3,15 @@
 A simple .gitlab-ci.yml would look like this:
 
 ```
+image: faerulsalamun/gitlab-ci-cd-testfairy-android
+
+before_script:
+    - export TESFAIRY_TOKEN=YOUR_TOKEN_TESTFAIRY
+    - export KEYSTORE=/home/testfairy.jks
+    - export STOREPASS=testfairy
+    - export ALIAS=testfairy
+    - chmod a+x /home/testfairy.sh
+
 stages:
   - build
 
@@ -12,11 +21,6 @@ debug:
     - release
   script:
     - ./gradlew assembleDebug
-    - export TESFAIRY_TOKEN=YOUR_TOKEN_TESTFAIRY
-    - export KEYSTORE=/home/testfairy.jks
-    - export STOREPASS=testfairy
-    - export ALIAS=testfairy
-    - chmod a+x /home/testfairy.sh
     - /home/testfairy.sh app/build/outputs/apk/app-debug.apk
   artifacts:
     paths:
@@ -28,11 +32,6 @@ release:
     - release
   script:
     - ./gradlew assembleRelease
-    - export TESFAIRY_TOKEN=YOUR_TOKEN_TESTFAIRY
-    - export KEYSTORE=/home/testfairy.jks
-    - export STOREPASS=testfairy
-    - export ALIAS=testfairy
-    - chmod a+x /home/testfairy.sh
     - /home/testfairy.sh app/build/outputs/apk/app-release.apk
   artifacts:
     paths:
