@@ -1,5 +1,5 @@
 #
-# GitLab CI-CD testfairy: Android v1.1
+# GitLab CI-CD testfairy: Android v1.2
 #
 # Original Source
 # https://hub.docker.com/r/jangrewe/gitlab-ci-android/
@@ -33,6 +33,7 @@ RUN apt-get -qq update && \
       lib32ncurses5 \
       lib32z1 \
       unzip \
+      zip \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN rm -f /etc/ssl/certs/java/cacerts; \
